@@ -5,7 +5,7 @@ function App() {
   
   return (
     <>
-      <div className="bg-red-600 w-48">
+      <div className="bg-blue-600 border-amber-400 border-8">
         <UserData/>
         <OnSaleNow/>
       </div>
