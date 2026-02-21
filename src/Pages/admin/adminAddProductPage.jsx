@@ -115,9 +115,9 @@ export default function AdminAddProductPage(){
 
             <div className="w-[25%]   h-[120px] flex flex-col">
                 <label className="font-bold ml-2">isVisble</label>
-                <select value={isVisible} onCanPlay={(e)=>{setIsVisible(e.target.value)}} className="border-4 border-accent rounded-[10px] h-[50px] p-2 m-2 focus:bg-accent/5 outline-none" >
-                    <option value="true 1">Yes</option>
-                    <option value="false 4">No</option>
+                <select value={isVisible} oncChange={(e)=>{setIsVisible(e.target.value)}} className="border-4 border-accent rounded-[10px] h-[50px] p-2 m-2 focus:bg-accent/5 outline-none" >
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
                 </select>
             </div>
 
