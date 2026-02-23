@@ -2,19 +2,21 @@ import axios from "axios"
 import { useState } from "react"
 import toast from "react-hot-toast"
 import { useNavigate } from "react-router-dom"
+import uploadFile from "../../utils/mediaUpload.js";
 
 export default function AdminAddProductPage(){
 
-    const [productId , setProductId] = useState()
-    const [name , setName] = useState()
-    const [description , setDescription] = useState()
-    const [altName , setAltName] = useState()
-    const [price , setPrice] = useState()
-    const [labelledPrice , setLabelledPrice] = useState()
-    const [catagory , setCatagory] = useState()
-    const [brand , setBrand] = useState()
-    const [model , setModel] = useState()
-    const [isVisible , setIsVisible] = useState()
+    const [productId , setProductId] = useState("")
+    const [name , setName] = useState("")
+    const [description , setDescription] = useState("")
+    const [altName , setAltName] = useState(",")
+    const [price , setPrice] = useState("")
+    const [labelledPrice , setLabelledPrice] = useState("")
+    const [catagory , setCatagory] = useState("Others")
+    const [brand , setBrand] = useState("Standard")
+    const [model , setModel] = useState("")
+    const [isVisible , setIsVisible] = useState(true)
+    const [files , setFiles] = useState([])
     
 
     const navigate = useNavigate()
@@ -28,13 +30,22 @@ export default function AdminAddProductPage(){
                 return;
             }
 
+            const fileUploadPromises = [];
+            
+            for(let i ; i<files.length ; i++){
+                fileUploadPromises[i] = uploadFile[i]
+            }
+
+            const imageURL = await Promise.all(fileUploadPromises)
+
             await axios.post(import.meta.env.VITE_API_URL+"/products/" ,{
                 productId: productId,
                 name: name,
                 description: description,
-                altName: altName,
+                altName: altName.split(","),
                 price: price,
                 labelledPrice: labelledPrice,
+                images: imageURL,
                 catagory: catagory,
                 brand: brand,
                 model: model,
@@ -69,6 +80,11 @@ export default function AdminAddProductPage(){
                 <textarea value={description} onChange={(e)=>{setDescription(e.target.value)}} placeholder="Ex: Gaming RGB Keyboard" className="border-4 border-accent rounded-[10px] h-[100px] p-2 m-2 focus:bg-accent/5 outline-none"></textarea>
             </div>
 
+            <div className="w-full h-[170px] flex flex-col">
+                <label className="font-bold ml-2">Images</label>
+                <input multiple type="file" onChange={(e)=>{setFiles(e.target.files)}}/>
+            </div>
+
             <div className="w-[100%]   h-[120px] flex flex-col">
                 <label className="font-bold ml-2">Alt Name (Coma Seperated)</label>
                 <input value={altName} onChange={(e)=>{setAltName(e.target.value)}} placeholder="Ex: Keyboard,Wireless,Gaming" className="border-4 border-accent rounded-[10px] h-[50px] p-2 m-2 focus:bg-accent/5 outline-none"/>
@@ -87,21 +103,18 @@ export default function AdminAddProductPage(){
             <div className="w-[25%]   h-[120px] flex flex-col">
                 <label className="font-bold ml-2">Catogry</label>
                 <select value={catagory} onChange={(e)=>{setCatagory(e.target.value)}} className="border-4 border-accent rounded-[10px] h-[50px] p-2 m-2 focus:bg-accent/5 outline-none" >
-                    <option value="Option 1">Option 1</option>
-                    <option value="Option 4">Option 2</option>
-                    <option value="Option 3">Option 3</option>
-                    
-                    <option>Option 4</option>
+                <option value="Others">Others</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Clothing">Clothing</option>
+                <option value="Footwear">Footwear</option>
                 </select>
             </div>
 
             <div className="w-[25%]   h-[120px] flex flex-col">
                 <label className="font-bold ml-2">Model</label>
-                <select value={model} onChange={(e)=>{setModel(e.target.value)}} className="border-4 border-accent rounded-[10px] h-[50px] p-2 m-2 focus:bg-accent/5 outline-none" >
-                    <option value="Option 1">Option 1</option>
-                    <option value="Option 4">Option 2</option>
-                    <option value="Option 3">Option 3</option>
-                </select>
+                <input value={model} onChange={(e)=>{setModel(e.target.value)}} placeholder="Apple" className="border-4 border-accent rounded-[10px] h-[50px] p-2 m-2 focus:bg-accent/5 outline-none"/>
+            
+
             </div>
 
             <div className="w-[25%]   h-[120px] flex flex-col">
@@ -115,7 +128,7 @@ export default function AdminAddProductPage(){
 
             <div className="w-[25%]   h-[120px] flex flex-col">
                 <label className="font-bold ml-2">isVisble</label>
-                <select value={isVisible} oncChange={(e)=>{setIsVisible(e.target.value)}} className="border-4 border-accent rounded-[10px] h-[50px] p-2 m-2 focus:bg-accent/5 outline-none" >
+                <select value={isVisible} onChange={(e)=>{setIsVisible(e.target.value)}} className="border-4 border-accent rounded-[10px] h-[50px] p-2 m-2 focus:bg-accent/5 outline-none" >
                     <option value="true">Yes</option>
                     <option value="false">No</option>
                 </select>
