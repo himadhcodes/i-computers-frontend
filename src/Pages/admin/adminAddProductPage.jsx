@@ -2,7 +2,8 @@ import axios from "axios"
 import { useState } from "react"
 import toast from "react-hot-toast"
 import { useNavigate } from "react-router-dom"
-import uploadFile from "../../utils/mediaUpload.js";
+import uploadFile from "../../../utils/mediaUpload"
+
 
 export default function AdminAddProductPage(){
 
@@ -29,7 +30,7 @@ export default function AdminAddProductPage(){
                 navigate("/login")
                 return;
             }
-
+            
             const fileUploadPromises = [];
             
             for(let i ; i<files.length ; i++){
